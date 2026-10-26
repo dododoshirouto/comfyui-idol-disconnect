@@ -21,6 +21,7 @@ ComfyUI の画面は、開いている間ずっと WebSocket と HTTP の通信�
 - 基準時刻 = 「最終操作入力の時刻」と「最終生成終了の時刻」と「ページ読み込み時刻」のうち、最も新しいもの。
 - 基準時刻から **切断までの時間**（既定 5 分）が経過したら切断する。
 - **キューに処理が残っている間（実行中または待ち）は、切断も警告表示もしない。** 経過時間の計測は、キューが空になった時点から始め直す。
+- 他の拡張が `window.__torilabBusy` に立てたフラグ（値が `true` のもの）が 1 つでもある間も、キューに処理が残っているのと同じに扱う。例：[comfyui-url-downloader](https://github.com/dododoshirouto/comfyui-url-downloader) はダウンロード中に `window.__torilabBusy.urlDownloader = true` にする（サーバの裏で動くダウンロードは RunPod から処理中に見えないため）。
 
 ### 3.2 最終操作入力として数えるもの
 

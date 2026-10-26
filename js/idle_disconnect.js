@@ -29,8 +29,18 @@ let isRunning = false;
 let disconnecting = false;
 let warningEl = null;
 
+// 他の拡張が window.__torilabBusy に立てたフラグ（例：URL ダウンローダーのダウンロード中）
+function isOtherExtensionBusy() {
+  try {
+    const flags = window.__torilabBusy;
+    return !!flags && Object.values(flags).some((v) => v === true);
+  } catch {
+    return false;
+  }
+}
+
 function isQueueBusy() {
-  return queueRemaining > 0 || isRunning;
+  return queueRemaining > 0 || isRunning || isOtherExtensionBusy();
 }
 
 function markActivity() {
